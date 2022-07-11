@@ -16,11 +16,13 @@ app.get("/*", (_,res)=>{
 
 const server = http.createServer(app); 
 const wss = new WebSocket.Server({ server });
+const sockets = [];
 
+//wss : server 전체를 의미하고, socket : user가 연 브라우저를 의미
 wss.on("connection", (socket)=>{
-    socket.send("hello!!!");
+    sockets.push(socket);
     socket.on("message",(message)=>{
-        console.log(message.toString());
+        sockets.forEach(aSocket => aSocket.send(message.toString()));
     });
     socket.on("close", ()=>{
         console.log("Disconnected from Browser ❌");
