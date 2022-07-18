@@ -21,8 +21,15 @@ const sockets = [];
 //wss : server 전체를 의미하고, socket : user가 연 브라우저를 의미
 wss.on("connection", (socket)=>{
     sockets.push(socket);
+    socket["nickname"] = "anonymous";
     socket.on("message",(message)=>{
-        sockets.forEach(aSocket => aSocket.send(message.toString()));
+        const parsed = JSON.parse(message.toString());
+        switch(parsed.type){
+            case "msg":
+                sockets.forEach(aSocket => aSocket.send(`${socket.nickname} : ${parsed.payload}`));
+            case "nickname":
+                socket["nickname"] = parsed.payload;
+        }
     });
     socket.on("close", ()=>{
         console.log("Disconnected from Browser ❌");

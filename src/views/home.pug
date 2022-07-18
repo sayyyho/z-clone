@@ -10,8 +10,11 @@ html(lang="en")
         header  
             h1 Soom
         main 
+            form#nickname
+                input(type="text", placeholder="write a msg", required)
+                button save 
             ul
-            form
+            form#msg
                 input(type="text", placeholder="write a msg", required)
                 button send 
         script(src="public/js/app.js") 
